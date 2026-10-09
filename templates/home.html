@@ -1,1549 +1,874 @@
+
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>Khush Raho 🌸</title>
-
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-
-body {
-
-    margin: 0;
-
-    font-family:
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    background:
-        linear-gradient(
-            135deg,
-            #dff5ff,
-            #eefaff
-        );
-
-    height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-}
-
-
-.chat-app {
-
-    width: 95%;
-
-    max-width: 900px;
-
-    height: 94vh;
-
-    background: white;
-
-    border-radius: 24px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 15px 45px
-        rgba(70,150,190,.18);
-
-    display: flex;
-
-    flex-direction: column;
-}
-
-
-/* HEADER */
-
-.header {
-
-    background:
-        linear-gradient(
-            135deg,
-            #bdeeff,
-            #dff8ff
-        );
-
-    padding: 14px 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-
-    border-bottom:
-        1px solid #d7edf5;
-}
-
-
-.header-avatars {
-
-    display: flex;
-
-    align-items: center;
-}
-
-
-.header-avatars img {
-
-    width: 48px;
-
-    height: 48px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-
-    border:
-        3px solid white;
-
-    box-shadow:
-        0 3px 10px
-        rgba(0,0,0,.10);
-}
-
-
-.header-avatars img + img {
-
-    margin-left: -12px;
-}
-
-
-.header-info {
-
-    flex: 1;
-}
-
-
-.header-title {
-
-    font-size: 20px;
-
-    font-weight: 700;
-
-    color: #24546a;
-}
-
-
-.header-subtitle {
-
-    font-size: 13px;
-
-    color: #6d8b98;
-}
-
-
-.online-status {
-
-    font-size: 12px;
-
-    color: #42a66a;
-
-    margin-top: 3px;
-}
-
-
-.logout {
-
-    text-decoration: none;
-
-    color: #557582;
-
-    font-size: 13px;
-
-    padding:
-        7px 11px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255,255,255,.7);
-}
-
-
-/* CHAT */
-
-.chat-box {
-
-    flex: 1;
-
-    padding: 20px;
-
-    overflow-y: auto;
-
-    background:
-        linear-gradient(
-            180deg,
-            #f8fdff,
-            #eefaff
-        );
-}
-
-
-.message-row {
-
-    display: flex;
-
-    margin-bottom: 16px;
-
-    gap: 9px;
-
-    align-items: flex-end;
-}
-
-
-.message-row.user {
-
-    justify-content: flex-end;
-}
-
-
-.message-row.user .avatar {
-
-    display: none;
-}
-
-
-.avatar {
-
-    width: 38px;
-
-    height: 38px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-
-    flex-shrink: 0;
-}
-
-
-.message-content {
-
-    max-width: 72%;
-}
-
-
-.sender-name {
-
-    font-size: 11px;
-
-    color: #78909c;
-
-    margin-left: 5px;
-
-    margin-bottom: 3px;
-}
-
-
-.bubble {
-
-    padding:
-        10px 14px;
-
-    border-radius:
-        17px;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-
-    word-wrap: break-word;
-
-    white-space: pre-wrap;
-}
-
-
-.ai-bubble {
-
-    background: white;
-
-    color: #355361;
-
-    border:
-        1px solid #dceff6;
-
-    border-bottom-left-radius: 5px;
-}
-
-
-.user-bubble {
-
-    background: #ccefff;
-
-    color: #285467;
-
-    border-bottom-right-radius: 5px;
-}
-
-
-.time {
-
-    font-size: 9px;
-
-    color: #9aadb5;
-
-    margin-top: 3px;
-
-    margin-left: 5px;
-}
-
-
-/* TYPING */
-
-.typing-row {
-
-    display: none;
-
-    align-items: center;
-
-    gap: 9px;
-
-    margin-bottom: 12px;
-}
-
-
-.typing-avatar {
-
-    width: 38px;
-
-    height: 38px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-}
-
-
-.typing-bubble {
-
-    background: white;
-
-    border:
-        1px solid #dceff6;
-
-    border-radius: 17px;
-
-    padding:
-        9px 13px;
-
-    color: #6d8b98;
-
-    font-size: 12px;
-}
-
-
-.dots {
-
-    display: inline-flex;
-
-    gap: 3px;
-
-    margin-left: 5px;
-}
-
-
-.dots span {
-
-    width: 4px;
-
-    height: 4px;
-
-    background: #7ba8b8;
-
-    border-radius: 50%;
-
-    animation:
-        blink 1.2s infinite;
-}
-
-
-.dots span:nth-child(2) {
-
-    animation-delay: .2s;
-}
-
-
-.dots span:nth-child(3) {
-
-    animation-delay: .4s;
-}
-
-
-@keyframes blink {
-
-    0%,60%,100% {
-        opacity: .3;
-    }
-
-    30% {
-        opacity: 1;
-    }
-}
-
-
-/* INPUT */
-
-.input-area {
-
-    display: flex;
-
-    gap: 8px;
-
-    padding: 13px;
-
-    background: white;
-
-    border-top:
-        1px solid #e1f0f5;
-}
-
-
-.input-area input {
-
-    flex: 1;
-
-    border:
-        1px solid #d6ebf2;
-
-    border-radius: 22px;
-
-    padding:
-        11px 15px;
-
-    outline: none;
-
-    font-size: 14px;
-
-    color: #355361;
-}
-
-
-.input-area input:focus {
-
-    border-color:
-        #9bd7ea;
-}
-
-
-.voice-btn {
-
-    width: 42px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background:
-        #e8f8fd;
-
-    font-size: 18px;
-
-    cursor: pointer;
-}
-
-
-.send-btn {
-
-    width: 44px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background:
-        #aee3f5;
-
-    font-size: 18px;
-
-    color: #285467;
-
-    cursor: pointer;
-}
-
-
-.send-btn:disabled {
-
-    opacity: .5;
-
-    cursor: not-allowed;
-}
-
-
-@media(max-width:600px) {
-
-    .chat-app {
-
-        width: 100%;
-
-        height: 100vh;
-
-        border-radius: 0;
-    }
-
-
-    .message-content {
-
-        max-width: 82%;
-    }
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khush Raho 🌸</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #dff5ff, #eefaff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-app {
+            width: 95%;
+            max-width: 900px;
+            height: 94vh;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(70, 150, 190, .18);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #bdeeff, #dff8ff);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid #d7edf5;
+        }
+
+        .header-avatars { display: flex; align-items: center; }
+
+        .header-avatars img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .10);
+        }
+
+        .header-avatars img + img { margin-left: -12px; }
+        .header-info { flex: 1; }
+        .header-title { font-size: 20px; font-weight: 700; color: #24546a; }
+        .header-subtitle { font-size: 13px; color: #6d8b98; }
+        .online-status { font-size: 12px; color: #42a66a; margin-top: 3px; }
+
+        .logout {
+            text-decoration: none;
+            color: #557582;
+            font-size: 13px;
+            padding: 7px 11px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .7);
+        }
+
+        .chat-box {
+            flex: 1;
+            min-height: 0;
+            padding: 20px;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #f8fdff, #eefaff);
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 16px;
+            gap: 9px;
+            align-items: flex-end;
+        }
+
+        .message-row.user { justify-content: flex-end; }
+        .message-row.user .avatar { display: none; }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            max-width: 72%;
+            width: fit-content;
+            min-width: 0;
+        }
+
+        .bubble {
+            padding: 10px 14px;
+            border-radius: 17px;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .ai-bubble {
+            background: white;
+            color: #355361;
+            border: 1px solid #dceff6;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-bubble {
+            background: #ccefff;
+            color: #285467;
+            border-bottom-right-radius: 5px;
+        }
+
+        .sender-name {
+            font-size: 11px;
+            color: #78909c;
+            margin-left: 5px;
+            margin-bottom: 3px;
+        }
+
+        .time {
+            font-size: 9px;
+            color: #9aadb5;
+            margin-top: 3px;
+            margin-left: 5px;
+        }
+
+        .message-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            margin-top: 5px;
+        }
+
+        .message-action {
+            border: 1px solid #d5eaf2;
+            border-radius: 8px;
+            background: white;
+            color: #557582;
+            padding: 4px 9px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .message-action:hover { background: #e8f8fd; }
+        .delete-action { color: #b34b60; }
+        .message-action:disabled { opacity: .5; cursor: not-allowed; }
+
+        .typing-row {
+            display: none;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+        }
+
+        .typing-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .typing-bubble {
+            background: white;
+            border: 1px solid #dceff6;
+            border-radius: 17px;
+            padding: 9px 13px;
+            color: #6d8b98;
+            font-size: 12px;
+        }
+
+        .dots { display: inline-flex; gap: 3px; margin-left: 5px; }
+
+        .dots span {
+            width: 4px;
+            height: 4px;
+            background: #7ba8b8;
+            border-radius: 50%;
+            animation: blink 1.2s infinite;
+        }
+
+        .dots span:nth-child(2) { animation-delay: .2s; }
+        .dots span:nth-child(3) { animation-delay: .4s; }
+
+        @keyframes blink {
+            0%, 60%, 100% { opacity: .3; }
+            30% { opacity: 1; }
+        }
+
+        .input-area {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            padding: 13px;
+            background: white;
+            border-top: 1px solid #e1f0f5;
+        }
+
+        .input-area textarea {
+            flex: 1;
+            min-width: 0;
+            min-height: 42px;
+            max-height: 120px;
+            resize: none;
+            overflow-y: auto;
+            border: 1px solid #d6ebf2;
+            border-radius: 20px;
+            padding: 11px 15px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #355361;
+            background: white;
+        }
+
+        .input-area textarea:focus { border-color: #9bd7ea; }
+
+        .voice-btn, .send-btn {
+            height: 42px;
+            width: 44px;
+            flex-shrink: 0;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .voice-btn { background: #e8f8fd; font-size: 18px; }
+        .send-btn { background: #aee3f5; font-size: 18px; color: #285467; }
+        .send-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+        @media (max-width: 600px) {
+            .chat-app {
+                width: 100%;
+                height: 100vh;
+                height: 100dvh;
+                border-radius: 0;
+            }
+
+            .message-content { max-width: 82%; }
+            .chat-box { padding: 14px; }
+            .header { padding: 12px; }
+            .input-area { padding: 10px; }
+        }
+    </style>
 </head>
-
 
 <body>
 
+<form id="csrfForm" hidden>
+    {% csrf_token %}
+</form>
 
 <div class="chat-app">
+    <div class="header">
+        <div class="header-avatars">
+            <img src="/static/krishna.jpg" alt="Krishna">
+            <img src="/static/radha.jpg" alt="Radha">
+        </div>
 
+        <div class="header-info">
+            <div class="header-title">Khush Raho 🌸</div>
+            <div class="header-subtitle">Krishna • Radha • You</div>
+            <div class="online-status">● Krishna &amp; Radha online</div>
+        </div>
 
-<!-- HEADER -->
-
-<div class="header">
-
-
-    <div class="header-avatars">
-
-        <img
-            src="/static/krishna.jpg"
-            alt="Krishna"
-        >
-
-        <img
-            src="/static/radha.jpg"
-            alt="Radha"
-        >
-
+        <a href="/accounts/logout/" class="logout">Logout</a>
     </div>
 
-
-    <div class="header-info">
-
-        <div class="header-title">
-            Khush Raho 🌸
+    <div class="chat-box" id="chatBox">
+        <div class="message-row welcome-message">
+            <img class="avatar" src="/static/krishna.jpg" alt="Krishna">
+            <div class="message-content">
+                <div class="sender-name">Krishna</div>
+                <div class="bubble ai-bubble">Bolo Sakhi, kaise ho? 🌸</div>
+                <div class="time">Welcome</div>
+            </div>
         </div>
 
-        <div class="header-subtitle">
-            Krishna • Radha • You
+        <div class="message-row welcome-message">
+            <img class="avatar" src="/static/radha.jpg" alt="Radha">
+            <div class="message-content">
+                <div class="sender-name">Radha</div>
+                <div class="bubble ai-bubble">Haan Sakhi, bolo... aaj moner ki khobor? 💗</div>
+                <div class="time">Welcome</div>
+            </div>
         </div>
 
-        <div class="online-status">
-            ● Krishna & Radha online
+        <div class="typing-row" id="typingRow">
+            <img class="typing-avatar" id="typingAvatar"
+                 src="/static/krishna.jpg" alt="">
+            <div class="typing-bubble">
+                <span id="typingName">Krishna</span>
+                <span>is typing</span>
+                <span class="dots"><span></span><span></span><span></span></span>
+            </div>
         </div>
-
     </div>
 
+    <div class="input-area">
+        <textarea id="messageInput" placeholder="Bolo Sakhi..."
+                  autocomplete="off" rows="1"
+                  aria-label="Write your message"></textarea>
 
-    <a
-        href="/accounts/logout/"
-        class="logout"
-    >
-        Logout
-    </a>
+        <button type="button" class="voice-btn" id="voiceButton"
+                aria-label="Voice input">🎤</button>
 
+        <button type="button" class="send-btn" id="sendButton"
+                aria-label="Send message">➤</button>
+    </div>
 </div>
-
-
-<!-- CHAT -->
-
-<div
-    class="chat-box"
-    id="chatBox"
->
-
-
-    <div class="message-row">
-
-        <img
-            class="avatar"
-            src="/static/krishna.jpg"
-            alt="Krishna"
-        >
-
-        <div class="message-content">
-
-            <div class="sender-name">
-                Krishna
-            </div>
-
-            <div class="bubble ai-bubble">
-                Bolo Sakhi, kaise ho? 🌸
-            </div>
-
-            <div class="time">
-                Just now
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="message-row">
-
-        <img
-            class="avatar"
-            src="/static/radha.jpg"
-            alt="Radha"
-        >
-
-        <div class="message-content">
-
-            <div class="sender-name">
-                Radha
-            </div>
-
-            <div class="bubble ai-bubble">
-                Haan Sakhi, bolo... aaj moner ki khobor? 💗
-            </div>
-
-            <div class="time">
-                Just now
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- TYPING -->
-
-    <div
-        class="typing-row"
-        id="typingRow"
-    >
-
-        <img
-            class="typing-avatar"
-            id="typingAvatar"
-            src="/static/krishna.jpg"
-            alt=""
-        >
-
-        <div class="typing-bubble">
-
-            <span id="typingName">
-                Krishna
-            </span>
-
-            <span>
-                is typing
-            </span>
-
-            <span class="dots">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </span>
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<!-- INPUT -->
-
-<div class="input-area">
-
-    <input
-        id="messageInput"
-        type="text"
-        placeholder="Bolo Sakhi..."
-        autocomplete="off"
-    >
-
-
-    <button
-        class="voice-btn"
-        onclick="startVoice()"
-    >
-        🎤
-    </button>
-
-
-    <button
-        class="send-btn"
-        id="sendButton"
-        onclick="sendMessage()"
-    >
-        ➤
-    </button>
-
-</div>
-
-
-</div>
-
 
 <script>
 
+"use strict";
 
-const input =
-    document.getElementById(
-        "messageInput"
-    );
-
-
-const chatBox =
-    document.getElementById(
-        "chatBox"
-    );
-
-
-const typingRow =
-    document.getElementById(
-        "typingRow"
-    );
-
-
-const typingName =
-    document.getElementById(
-        "typingName"
-    );
-
-
-const typingAvatar =
-    document.getElementById(
-        "typingAvatar"
-    );
-
-
-const sendButton =
-    document.getElementById(
-        "sendButton"
-    );
-
-
-/* =========================
-   TIME
-========================= */
+const input = document.getElementById("messageInput");
+const chatBox = document.getElementById("chatBox");
+const typingRow = document.getElementById("typingRow");
+const typingName = document.getElementById("typingName");
+const typingAvatar = document.getElementById("typingAvatar");
+const sendButton = document.getElementById("sendButton");
+const voiceButton = document.getElementById("voiceButton");
 
 function getCurrentTime() {
-
-    return new Date()
-        .toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        );
+    return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 }
 
+function formatSavedTime(value) {
+    if (!value) return getCurrentTime();
 
-/* =========================
-   SCROLL
-========================= */
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return getCurrentTime();
+
+    return date.toLocaleString([], {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+}
 
 function scrollBottom() {
-
-    chatBox.scrollTop =
-        chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-
-/* =========================
-   SPEAKER
-========================= */
-
-function getExplicitSpeaker(
-    message
-) {
-
-    const text =
-        message.toLowerCase();
-
-
-    if (
-        text.includes("krishna") ||
-        text.includes("কৃষ্ণ")
-    ) {
-
-        return "krishna";
-    }
-
-
-    if (
-        text.includes("radha") ||
-        text.includes("রাধা")
-    ) {
-
-        return "radha";
-    }
-
-
-    return null;
+function getCsrfToken() {
+    const token = document.querySelector(
+        '#csrfForm input[name="csrfmiddlewaretoken"]'
+    );
+    return token ? token.value : "";
 }
-
-
-/* =========================
-   TYPING
-========================= */
-
-function showTyping(
-    speaker
-) {
-
-    typingRow.style.display =
-        "flex";
-
-
-    if (
-        speaker === "radha"
-    ) {
-
-        typingName.textContent =
-            "Radha";
-
-        typingAvatar.src =
-            "/static/radha.jpg";
-
-    }
-
-    else if (
-        speaker === "both"
-    ) {
-
-        typingName.textContent =
-            "Krishna & Radha";
-
-        typingAvatar.src =
-            "/static/krishna.jpg";
-
-    }
-
-    else {
-
-        typingName.textContent =
-            "Krishna";
-
-        typingAvatar.src =
-            "/static/krishna.jpg";
-    }
-
-
-    scrollBottom();
-}
-
 
 function hideTyping() {
-
-    typingRow.style.display =
-        "none";
+    typingRow.style.display = "none";
 }
 
+function showTyping(speaker) {
+    typingRow.style.display = "flex";
 
-/* =========================
-   USER MESSAGE
-========================= */
-
-function addUserMessage(
-    message
-) {
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message-row user";
-
-
-    const content =
-        document.createElement(
-            "div"
-        );
-
-    content.className =
-        "message-content";
-
-
-    const bubble =
-        document.createElement(
-            "div"
-        );
-
-    bubble.className =
-        "bubble user-bubble";
-
-    bubble.textContent =
-        message;
-
-
-    const time =
-        document.createElement(
-            "div"
-        );
-
-    time.className =
-        "time";
-
-    time.textContent =
-        getCurrentTime();
-
-
-    content.appendChild(
-        bubble
-    );
-
-    content.appendChild(
-        time
-    );
-
-
-    row.appendChild(
-        content
-    );
-
-
-    chatBox.appendChild(
-        row
-    );
-
+    if (speaker === "radha") {
+        typingName.textContent = "Radha";
+        typingAvatar.src = "/static/radha.jpg";
+    } else {
+        typingName.textContent = "Krishna";
+        typingAvatar.src = "/static/krishna.jpg";
+    }
 
     scrollBottom();
 }
 
-
-/* =========================
-   CREATE STREAMING BUBBLE
-========================= */
-
-function createStreamingBubble(
-    speaker
-) {
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-    row.className =
-        "message-row";
-
-
-    const avatar =
-        document.createElement(
-            "img"
-        );
-
-    avatar.className =
-        "avatar";
-
-
-    if (
-        speaker === "Radha"
-    ) {
-
-        avatar.src =
-            "/static/radha.jpg";
-
-        avatar.alt =
-            "Radha";
-
-    }
-
-    else {
-
-        avatar.src =
-            "/static/krishna.jpg";
-
-        avatar.alt =
-            "Krishna";
-    }
-
-
-    const content =
-        document.createElement(
-            "div"
-        );
-
-    content.className =
-        "message-content";
-
-
-    const sender =
-        document.createElement(
-            "div"
-        );
-
-    sender.className =
-        "sender-name";
-
-    sender.textContent =
-        speaker;
-
-
-    const bubble =
-        document.createElement(
-            "div"
-        );
-
-    bubble.className =
-        "bubble ai-bubble";
-
-    bubble.textContent =
-        "";
-
-
-    const time =
-        document.createElement(
-            "div"
-        );
-
-    time.className =
-        "time";
-
-
-    content.appendChild(
-        sender
-    );
-
-    content.appendChild(
-        bubble
-    );
-
-    content.appendChild(
-        time
-    );
-
-
-    row.appendChild(
-        avatar
-    );
-
-    row.appendChild(
-        content
-    );
-
-
-    chatBox.appendChild(
-        row
-    );
-
-
-    scrollBottom();
-
-
-    return {
-        bubble,
-        time
-    };
+function getRowsForMessage(messageId) {
+    return Array.from(
+        chatBox.querySelectorAll(".message-row[data-message-id]")
+    ).filter(row => row.dataset.messageId === String(messageId));
 }
 
-
-/* =========================
-   PARSE STREAMED TEXT
-========================= */
-
-function cleanStreamText(
-    text
-) {
-
-    return text
-        .replace(
-            /^Krishna:\s*/i,
-            ""
-        )
-        .replace(
-            /^Radha:\s*/i,
-            ""
-        );
+function cleanStreamText(text) {
+    return text.replace(/^\s*(Krishna|Radha):\s*/i, "");
 }
 
+function getSpeakerFromReply(reply, fallback = "krishna") {
+    const match = (reply || "").match(/^\s*(Krishna|Radha):/i);
 
-/* =========================
-   SEND MESSAGE
-========================= */
-
-async function sendMessage() {
-
-    const message =
-        input.value.trim();
-
-
-    if (!message) {
-        return;
+    if (match) {
+        return match[1].toLowerCase();
     }
 
+    return fallback === "radha" ? "radha" : "krishna";
+}
 
-    addUserMessage(
-        message
-    );
+function addMessageActions(row, messageId) {
+    if (!row || !messageId) return;
 
+    row.dataset.messageId = String(messageId);
 
-    input.value = "";
+    const content = row.querySelector(".message-content");
+    if (!content || content.querySelector(".message-actions")) return;
 
+    const actions = document.createElement("div");
+    actions.className = "message-actions";
 
-    sendButton.disabled =
-        true;
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "message-action";
+    editButton.textContent = "Edit";
 
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "message-action delete-action";
+    deleteButton.textContent = "Delete";
 
-    const explicitSpeaker =
-        getExplicitSpeaker(
-            message
-        );
+    editButton.addEventListener("click", async function () {
+        const userBubble = row.querySelector(".user-bubble");
+        const oldText = userBubble ? userBubble.textContent : "";
+        const enteredText = prompt("Edit your message:", oldText);
 
+        if (enteredText === null) return;
 
-    /*
-       If Sakhi explicitly names
-       someone, we can show that
-       speaker immediately.
-    */
+        const newMessage = enteredText.trim();
 
-    if (explicitSpeaker) {
+        if (!newMessage) {
+            alert("Message cannot be empty.");
+            return;
+        }
 
-        showTyping(
-            explicitSpeaker
-        );
+        if (newMessage.length > 10000) {
+            alert("Message is too long.");
+            return;
+        }
 
-    }
+        if (newMessage === oldText) return;
 
+        editButton.disabled = true;
+        deleteButton.disabled = true;
 
-    try {
+        try {
+            const response = await fetch(`/api/edit/${messageId}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCsrfToken()
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({ message: newMessage })
+            });
 
-        const response =
-            await fetch(
-                "/api/chat/",
-                {
+            const data = await response.json();
 
-                    method: "POST",
+            if (!response.ok) {
+                throw new Error(
+                    data.error || "Could not edit message and reply."
+                );
+            }
 
-                    headers: {
+            // Update the user message.
+            if (userBubble) {
+                userBubble.textContent = data.message;
+            }
 
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-                            message:
-                                message
-                        })
-
-                }
+            // Find the matching AI reply row and update it too.
+            const linkedRows = getRowsForMessage(messageId);
+            const aiRow = linkedRows.find(
+                item => !item.classList.contains("user")
             );
 
+            if (aiRow) {
+                const aiBubble = aiRow.querySelector(".ai-bubble");
+                const sender = aiRow.querySelector(".sender-name");
+                const avatar = aiRow.querySelector(".avatar");
+
+                const speaker = getSpeakerFromReply(
+                    data.reply,
+                    data.persona
+                );
+
+                if (sender) {
+                    sender.textContent =
+                        speaker === "radha" ? "Radha" : "Krishna";
+                }
+
+                if (avatar) {
+                    avatar.src = speaker === "radha"
+                        ? "/static/radha.jpg"
+                        : "/static/krishna.jpg";
+
+                    avatar.alt =
+                        speaker === "radha" ? "Radha" : "Krishna";
+                }
+
+                if (aiBubble) {
+                    aiBubble.textContent = cleanStreamText(data.reply || "");
+                }
+            }
+
+            // If both characters spoke, retain both names in the displayed reply.
+            if (data.reply && data.reply.toLowerCase().includes("\nradha:")) {
+                const linkedRowsAfter = getRowsForMessage(messageId);
+                const aiRowAfter = linkedRowsAfter.find(
+                    item => !item.classList.contains("user")
+                );
+
+                if (aiRowAfter) {
+                    const sender = aiRowAfter.querySelector(".sender-name");
+                    if (sender) sender.textContent = "Krishna & Radha";
+                    const avatar = aiRowAfter.querySelector(".avatar");
+                    if (avatar) avatar.src = "/static/krishna.jpg";
+                }
+            }
+
+        } catch (error) {
+            console.error("Edit error:", error);
+            alert(error.message || "Could not edit message and reply.");
+        } finally {
+            editButton.disabled = false;
+            deleteButton.disabled = false;
+        }
+    });
+
+    deleteButton.addEventListener("click", async function () {
+        if (!confirm("Delete this message and its associated AI reply?")) {
+            return;
+        }
+
+        editButton.disabled = true;
+        deleteButton.disabled = true;
+
+        try {
+            const response = await fetch(`/api/delete/${messageId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCsrfToken()
+                },
+                credentials: "same-origin"
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Could not delete message.");
+            }
+
+            getRowsForMessage(messageId).forEach(row => row.remove());
+
+        } catch (error) {
+            console.error("Delete error:", error);
+            alert(error.message || "Could not delete message.");
+
+            editButton.disabled = false;
+            deleteButton.disabled = false;
+        }
+    });
+
+    actions.appendChild(editButton);
+    actions.appendChild(deleteButton);
+    content.appendChild(actions);
+}
+
+function addUserMessage(message, savedTime = null, messageId = null) {
+    const row = document.createElement("div");
+    row.className = "message-row user";
+
+    const content = document.createElement("div");
+    content.className = "message-content";
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble user-bubble";
+    bubble.textContent = message;
+
+    const time = document.createElement("div");
+    time.className = "time";
+    time.textContent = savedTime
+        ? formatSavedTime(savedTime)
+        : getCurrentTime();
+
+    content.appendChild(bubble);
+    content.appendChild(time);
+    row.appendChild(content);
+
+    chatBox.insertBefore(row, typingRow);
+
+    if (messageId) {
+        addMessageActions(row, messageId);
+    }
+
+    scrollBottom();
+    return row;
+}
+
+function createStreamingBubble(speaker, savedTime = null, messageId = null) {
+    const row = document.createElement("div");
+    row.className = "message-row";
+
+    if (messageId) {
+        row.dataset.messageId = String(messageId);
+    }
+
+    const avatar = document.createElement("img");
+    avatar.className = "avatar";
+    avatar.src = speaker === "Radha"
+        ? "/static/radha.jpg"
+        : "/static/krishna.jpg";
+    avatar.alt = speaker;
+
+    const content = document.createElement("div");
+    content.className = "message-content";
+
+    const sender = document.createElement("div");
+    sender.className = "sender-name";
+    sender.textContent = speaker;
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble ai-bubble";
+
+    const time = document.createElement("div");
+    time.className = "time";
+    time.textContent = savedTime
+        ? formatSavedTime(savedTime)
+        : "";
+
+    content.appendChild(sender);
+    content.appendChild(bubble);
+    content.appendChild(time);
+
+    row.appendChild(avatar);
+    row.appendChild(content);
+
+    chatBox.insertBefore(row, typingRow);
+    scrollBottom();
+
+    return { row, bubble, time };
+}
+
+async function loadChatHistory() {
+    try {
+        const response = await fetch("/api/history/", {
+            credentials: "same-origin"
+        });
 
         if (!response.ok) {
-
-            const errorData =
-                await response.json();
-
-            throw new Error(
-                errorData.error ||
-                "Server error."
-            );
+            throw new Error("Could not load chat history.");
         }
 
-
-        /*
-           Streaming response
-        */
-
-        const reader =
-            response.body.getReader();
-
-
-        const decoder =
-            new TextDecoder(
-                "utf-8"
-            );
-
-
-        let buffer = "";
-
-        let fullReply = "";
-
-        let bubbleObject = null;
-
-        let currentSpeaker =
-            explicitSpeaker === "radha"
-                ? "Radha"
-                : "Krishna";
-
-
-        let actualSpeakerKnown =
-            !!explicitSpeaker;
-
-
-        hideTyping();
-
-
-        while (true) {
-
-            const {
-                value,
-                done
-            } =
-                await reader.read();
-
-
-            if (done) {
-                break;
-            }
-
-
-            buffer +=
-                decoder.decode(
-                    value,
-                    {
-                        stream: true
-                    }
-                );
-
-
-            const lines =
-                buffer.split("\n");
-
-
-            buffer =
-                lines.pop();
-
-
-            for (
-                const line of lines
-            ) {
-
-                if (!line.trim()) {
-                    continue;
-                }
-
-
-                let event;
-
-                try {
-
-                    event =
-                        JSON.parse(
-                            line
-                        );
-
-                }
-
-                catch {
-
-                    continue;
-                }
-
-
-                /* -----------------
-                   TEXT CHUNK
-                ----------------- */
-
-                if (
-                    event.type ===
-                    "chunk"
-                ) {
-
-                    const chunk =
-                        event.text ||
-                        "";
-
-
-                    fullReply +=
-                        chunk;
-
-
-                    /*
-                       Detect speaker
-                       as soon as Gemini
-                       sends the prefix.
-                    */
-
-                    if (
-                        !actualSpeakerKnown
-                    ) {
-
-                        const lower =
-                            fullReply
-                            .toLowerCase();
-
-
-                        if (
-                            lower.startsWith(
-                                "radha:"
-                            )
-                        ) {
-
-                            currentSpeaker =
-                                "Radha";
-
-                            actualSpeakerKnown =
-                                true;
-
-                        }
-
-                        else if (
-                            lower.startsWith(
-                                "krishna:"
-                            )
-                        ) {
-
-                            currentSpeaker =
-                                "Krishna";
-
-                            actualSpeakerKnown =
-                                true;
-                        }
-                    }
-
-
-                    /*
-                       Create bubble
-                    */
-
-                    if (
-                        !bubbleObject &&
-                        (
-                            actualSpeakerKnown
-                            ||
-                            fullReply.length > 8
-                        )
-                    ) {
-
-                        bubbleObject =
-                            createStreamingBubble(
-                                currentSpeaker
-                            );
-                    }
-
-
-                    if (
-                        bubbleObject
-                    ) {
-
-                        bubbleObject
-                            .bubble
-                            .textContent =
-                            cleanStreamText(
-                                fullReply
-                            );
-
-
-                        bubbleObject
-                            .time
-                            .textContent =
-                            getCurrentTime();
-
-
-                        scrollBottom();
-                    }
-
-                }
-
-
-                /* -----------------
-                   DONE
-                ----------------- */
-
-                if (
-                    event.type ===
-                    "done"
-                ) {
-
-                    const speaker =
-                        event.speaker;
-
-
-                    if (
-                        speaker ===
-                        "both"
-                    ) {
-
-                        /*
-                           Both-speaker
-                           replies are rare.
-                           For now the streamed
-                           first response remains
-                           together.
-                        */
-
-                    }
-
-                }
-
-            }
-
+        const data = await response.json();
+        const history = Array.isArray(data.history) ? data.history : [];
+
+        if (history.length === 0) {
+            scrollBottom();
+            return;
         }
 
-
-        /*
-           If somehow no bubble
-           appeared, show fallback.
-        */
-
-        if (
-            !bubbleObject &&
-            fullReply
-        ) {
-
-            bubbleObject =
-                createStreamingBubble(
-                    currentSpeaker
-                );
-
-
-            bubbleObject
-                .bubble
-                .textContent =
-                cleanStreamText(
-                    fullReply
-                );
-
-
-            bubbleObject
-                .time
-                .textContent =
-                getCurrentTime();
-        }
-
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
+        chatBox.querySelectorAll(".welcome-message").forEach(
+            row => row.remove()
         );
 
+        history.forEach(item => {
+            addUserMessage(item.message || "", item.created_at, item.id);
 
-        hideTyping();
+            const reply = item.reply || "";
+            const hasBoth = /Krishna:[\s\S]*Radha:|Radha:[\s\S]*Krishna:/i.test(reply);
+            const speaker = getSpeakerFromReply(reply, item.persona);
 
+            const replyObject = createStreamingBubble(
+                hasBoth ? "Krishna" : (speaker === "radha" ? "Radha" : "Krishna"),
+                item.created_at,
+                item.id
+            );
 
-        createStreamingBubble(
-            "Krishna"
-        )
-        .bubble
-        .textContent =
-            "Sakhi, ekhon ektu technical problem hocche. Abar ekbar try koro.";
+            if (hasBoth) {
+                replyObject.row.querySelector(".sender-name").textContent =
+                    "Krishna & Radha";
+            }
 
+            replyObject.bubble.textContent = cleanStreamText(reply);
+        });
 
+    } catch (error) {
+        console.error("History loading failed:", error);
     }
 
-    finally {
-
-        hideTyping();
-
-        sendButton.disabled =
-            false;
-
-        input.focus();
-
-    }
-
+    scrollBottom();
 }
 
+async function sendMessage() {
+    const message = input.value.trim();
 
-/* =========================
-   ENTER
-========================= */
+    if (!message || sendButton.disabled) return;
 
-input.addEventListener(
-    "keydown",
-    function(event) {
+    const userRow = addUserMessage(message);
 
-        if (
-            event.key === "Enter"
-        ) {
+    input.value = "";
+    input.style.height = "auto";
+    sendButton.disabled = true;
+    showTyping("krishna");
 
-            event.preventDefault();
+    try {
+        const response = await fetch("/api/chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCsrfToken()
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({ message })
+        });
 
-            sendMessage();
+        if (!response.ok) {
+            let messageText = "Server error.";
 
+            try {
+                const errorData = await response.json();
+                messageText = errorData.error || messageText;
+            } catch (_) {}
+
+            throw new Error(messageText);
         }
 
+        if (!response.body) {
+            throw new Error("Streaming response is unavailable.");
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+
+        let buffer = "";
+        let fullReply = "";
+        let replyObject = null;
+        let savedMessageId = null;
+        let currentSpeaker = "Krishna";
+
+        function processEventLine(line) {
+            if (!line.trim()) return;
+
+            let event;
+
+            try {
+                event = JSON.parse(line);
+            } catch (_) {
+                return;
+            }
+
+            if (event.type === "chunk") {
+                fullReply += event.text || "";
+
+                const match = fullReply.match(/^\s*(Krishna|Radha):/i);
+
+                if (match) {
+                    currentSpeaker =
+                        match[1].toLowerCase() === "radha"
+                            ? "Radha"
+                            : "Krishna";
+                }
+
+                if (!replyObject && fullReply.length > 0) {
+                    replyObject = createStreamingBubble(currentSpeaker);
+                }
+
+                if (replyObject) {
+                    replyObject.bubble.textContent = cleanStreamText(fullReply);
+                    replyObject.time.textContent = getCurrentTime();
+                    scrollBottom();
+                }
+            }
+
+            if (event.type === "done") {
+                savedMessageId = event.message_id;
+
+                if (savedMessageId) {
+                    addMessageActions(userRow, savedMessageId);
+
+                    if (replyObject) {
+                        replyObject.row.dataset.messageId =
+                            String(savedMessageId);
+                    }
+                }
+            }
+
+            if (event.type === "error") {
+                throw new Error(event.error || "Reply generation failed.");
+            }
+        }
+
+        while (true) {
+            const result = await reader.read();
+            if (result.done) break;
+
+            buffer += decoder.decode(result.value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || "";
+
+            lines.forEach(processEventLine);
+        }
+
+        buffer += decoder.decode();
+        if (buffer.trim()) processEventLine(buffer);
+
+        if (!fullReply) {
+            throw new Error("The server returned an empty reply.");
+        }
+
+    } catch (error) {
+        console.error("Chat error:", error);
+        const errorBubble = createStreamingBubble("Krishna");
+        errorBubble.bubble.textContent =
+            "Sakhi, ekhon ektu technical problem hocche. Abar try koro.";
+        errorBubble.time.textContent = getCurrentTime();
+
+    } finally {
+        hideTyping();
+        sendButton.disabled = false;
+        input.focus();
+        scrollBottom();
     }
-);
+}
 
+input.addEventListener("input", function () {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 120) + "px";
+});
 
-/* =========================
-   VOICE
-========================= */
+input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+});
+
+sendButton.addEventListener("click", sendMessage);
 
 function startVoice() {
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-    if (
-        !(
-            "webkitSpeechRecognition"
-            in window
-        )
-    ) {
-
-        alert(
-            "Voice input ei browser-e available nei."
-        );
-
+    if (!SpeechRecognition) {
+        alert("Voice input ei browser-e available nei.");
         return;
     }
 
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
 
-    const recognition =
-        new webkitSpeechRecognition();
+    recognition.onresult = function (event) {
+        input.value = event.results[0][0].transcript;
+        input.dispatchEvent(new Event("input"));
+        input.focus();
+    };
 
-
-    recognition.lang =
-        "en-IN";
-
-
-    recognition.continuous =
-        false;
-
-
-    recognition.interimResults =
-        false;
-
-
-    recognition.onresult =
-        function(event) {
-
-            input.value =
-                event
-                .results[0][0]
-                .transcript;
-
-        };
-
+    recognition.onerror = function (event) {
+        console.error("Voice input error:", event.error);
+    };
 
     recognition.start();
-
 }
 
+voiceButton.addEventListener("click", startVoice);
 
-scrollBottom();
-
+loadChatHistory();
 </script>
-
-
 </body>
-
 </html>
