@@ -52,7 +52,7 @@
         }
 
         .header-avatars img + img { margin-left: -12px; }
-        .header-info { flex: 1; }
+        .header-info { flex: 1; min-width: 0; }
         .header-title { font-size: 20px; font-weight: 700; color: #24546a; }
         .header-subtitle { font-size: 13px; color: #6d8b98; }
         .online-status { font-size: 12px; color: #42a66a; margin-top: 3px; }
@@ -198,6 +198,7 @@
         }
 
         .input-area {
+            position: relative;
             display: flex;
             align-items: flex-end;
             gap: 8px;
@@ -226,7 +227,7 @@
 
         .input-area textarea:focus { border-color: #9bd7ea; }
 
-        .voice-btn, .send-btn {
+        .voice-btn, .send-btn, .emoji-btn {
             height: 42px;
             width: 44px;
             flex-shrink: 0;
@@ -239,6 +240,49 @@
         .send-btn { background: #aee3f5; font-size: 18px; color: #285467; }
         .send-btn:disabled { opacity: .5; cursor: not-allowed; }
 
+        .emoji-btn {
+            background: #f1fbff;
+            border: 1px solid #d6ebf2;
+            font-size: 22px;
+        }
+
+        .emoji-btn:hover { background: #dff5ff; }
+
+        .emoji-picker {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 12px;
+            width: min(320px, calc(100vw - 24px));
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 12px;
+            background: white;
+            border: 1px solid #d6ebf2;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(50, 120, 150, .2);
+            display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            gap: 5px;
+            z-index: 20;
+        }
+
+        .emoji-picker[hidden] { display: none; }
+
+        .emoji-option {
+            border: none;
+            border-radius: 9px;
+            background: transparent;
+            font-size: 23px;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+
+        .emoji-option:hover,
+        .emoji-option:focus {
+            background: #e8f8fd;
+            outline: none;
+        }
+
         @media (max-width: 600px) {
             .chat-app {
                 width: 100%;
@@ -250,7 +294,23 @@
             .message-content { max-width: 82%; }
             .chat-box { padding: 14px; }
             .header { padding: 12px; }
-            .input-area { padding: 10px; }
+            .input-area { padding: 10px; gap: 6px; }
+            .voice-btn, .send-btn, .emoji-btn {
+                width: 38px;
+                height: 42px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-avatars img {
+                width: 38px;
+                height: 38px;
+            }
+
+            .header-title { font-size: 17px; }
+            .header-subtitle { font-size: 11px; }
+            .logout { padding: 6px; font-size: 12px; }
+            .emoji-picker { grid-template-columns: repeat(7, 1fr); }
         }
     </style>
 </head>
@@ -308,6 +368,13 @@
     </div>
 
     <div class="input-area">
+        <div class="emoji-picker" id="emojiPicker" hidden
+             role="group" aria-label="Choose an emoji"></div>
+
+        <button type="button" class="emoji-btn" id="emojiButton"
+                aria-label="Open emoji picker"
+                aria-expanded="false">😊</button>
+
         <textarea id="messageInput" placeholder="Bolo Sakhi..."
                   autocomplete="off" rows="1"
                   aria-label="Write your message"></textarea>
@@ -321,7 +388,6 @@
 </div>
 
 <script>
-
 "use strict";
 
 const input = document.getElementById("messageInput");
@@ -331,6 +397,64 @@ const typingName = document.getElementById("typingName");
 const typingAvatar = document.getElementById("typingAvatar");
 const sendButton = document.getElementById("sendButton");
 const voiceButton = document.getElementById("voiceButton");
+const emojiButton = document.getElementById("emojiButton");
+const emojiPicker = document.getElementById("emojiPicker");
+
+const emojiList = [
+    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
+    "🥹", "😊", "😇", "🙂", "🙃", "😉", "😍", "🥰",
+    "😘", "😗", "😙", "😚", "🤗", "🫂", "🥲", "😭",
+    "😢", "🥺", "😔", "😌", "😴", "🤔", "🤭", "🫣",
+    "❤️", "🩷", "🧡", "💛", "💚", "💙", "💜", "🤍",
+    "🖤", "💔", "💕", "💞", "💓", "💗", "💖", "💘",
+    "✨", "⭐", "🌙", "🌸", "🌷", "🌹", "🪷", "🦚",
+    "🦋", "🌈", "☀️", "🌻", "🙏", "👏", "🤝", "💐"
+];
+
+emojiList.forEach(function (emoji) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "emoji-option";
+    button.textContent = emoji;
+    button.setAttribute("aria-label", emoji);
+    button.title = emoji;
+
+    button.addEventListener("click", function () {
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? input.value.length;
+        const text = input.value;
+
+        input.value = text.slice(0, start) + emoji + text.slice(end);
+
+        const cursor = start + emoji.length;
+        input.focus();
+        input.setSelectionRange(cursor, cursor);
+        input.dispatchEvent(new Event("input"));
+
+        emojiPicker.hidden = true;
+        emojiButton.setAttribute("aria-expanded", "false");
+    });
+
+    emojiPicker.appendChild(button);
+});
+
+emojiButton.addEventListener("click", function () {
+    emojiPicker.hidden = !emojiPicker.hidden;
+    emojiButton.setAttribute(
+        "aria-expanded",
+        String(!emojiPicker.hidden)
+    );
+});
+
+document.addEventListener("click", function (event) {
+    if (
+        !emojiPicker.contains(event.target) &&
+        !emojiButton.contains(event.target)
+    ) {
+        emojiPicker.hidden = true;
+        emojiButton.setAttribute("aria-expanded", "false");
+    }
+});
 
 function getCurrentTime() {
     return new Date().toLocaleTimeString([], {
@@ -393,9 +517,7 @@ function cleanStreamText(text) {
 function getSpeakerFromReply(reply, fallback = "krishna") {
     const match = (reply || "").match(/^\s*(Krishna|Radha):/i);
 
-    if (match) {
-        return match[1].toLowerCase();
-    }
+    if (match) return match[1].toLowerCase();
 
     return fallback === "radha" ? "radha" : "krishna";
 }
@@ -464,12 +586,8 @@ function addMessageActions(row, messageId) {
                 );
             }
 
-            // Update the user message.
-            if (userBubble) {
-                userBubble.textContent = data.message;
-            }
+            if (userBubble) userBubble.textContent = data.message;
 
-            // Find the matching AI reply row and update it too.
             const linkedRows = getRowsForMessage(messageId);
             const aiRow = linkedRows.find(
                 item => !item.classList.contains("user")
@@ -504,7 +622,6 @@ function addMessageActions(row, messageId) {
                 }
             }
 
-            // If both characters spoke, retain both names in the displayed reply.
             if (data.reply && data.reply.toLowerCase().includes("\nradha:")) {
                 const linkedRowsAfter = getRowsForMessage(messageId);
                 const aiRowAfter = linkedRowsAfter.find(
@@ -514,6 +631,7 @@ function addMessageActions(row, messageId) {
                 if (aiRowAfter) {
                     const sender = aiRowAfter.querySelector(".sender-name");
                     if (sender) sender.textContent = "Krishna & Radha";
+
                     const avatar = aiRowAfter.querySelector(".avatar");
                     if (avatar) avatar.src = "/static/krishna.jpg";
                 }
@@ -590,9 +708,7 @@ function addUserMessage(message, savedTime = null, messageId = null) {
 
     chatBox.insertBefore(row, typingRow);
 
-    if (messageId) {
-        addMessageActions(row, messageId);
-    }
+    if (messageId) addMessageActions(row, messageId);
 
     scrollBottom();
     return row;
@@ -602,9 +718,7 @@ function createStreamingBubble(speaker, savedTime = null, messageId = null) {
     const row = document.createElement("div");
     row.className = "message-row";
 
-    if (messageId) {
-        row.dataset.messageId = String(messageId);
-    }
+    if (messageId) row.dataset.messageId = String(messageId);
 
     const avatar = document.createElement("img");
     avatar.className = "avatar";
@@ -625,9 +739,7 @@ function createStreamingBubble(speaker, savedTime = null, messageId = null) {
 
     const time = document.createElement("div");
     time.className = "time";
-    time.textContent = savedTime
-        ? formatSavedTime(savedTime)
-        : "";
+    time.textContent = savedTime ? formatSavedTime(savedTime) : "";
 
     content.appendChild(sender);
     content.appendChild(bubble);
@@ -668,11 +780,13 @@ async function loadChatHistory() {
             addUserMessage(item.message || "", item.created_at, item.id);
 
             const reply = item.reply || "";
-            const hasBoth = /Krishna:[\s\S]*Radha:|Radha:[\s\S]*Krishna:/i.test(reply);
+            const hasBoth =
+                /Krishna:[\s\S]*Radha:|Radha:[\s\S]*Krishna:/i.test(reply);
             const speaker = getSpeakerFromReply(reply, item.persona);
 
             const replyObject = createStreamingBubble(
-                hasBoth ? "Krishna" : (speaker === "radha" ? "Radha" : "Krishna"),
+                hasBoth ? "Krishna" :
+                    (speaker === "radha" ? "Radha" : "Krishna"),
                 item.created_at,
                 item.id
             );
@@ -811,6 +925,7 @@ async function sendMessage() {
 
     } catch (error) {
         console.error("Chat error:", error);
+
         const errorBubble = createStreamingBubble("Krishna");
         errorBubble.bubble.textContent =
             "Sakhi, ekhon ektu technical problem hocche. Abar try koro.";
