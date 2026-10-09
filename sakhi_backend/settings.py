@@ -6,12 +6,15 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / ".env")
+if os.getenv("DJANGO_DEBUG", "True").lower() == "true":
+    load_dotenv(BASE_DIR / ".env")
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "").strip()
 
 if not SECRET_KEY:
-    raise ValueError("DJANGO_SECRET_KEY is missing from environment")
+    raise ValueError(
+        "DJANGO_SECRET_KEY is missing. Check Render Environment Variables."
+    )
 
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
 
