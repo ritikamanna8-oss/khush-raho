@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Khush Raho 🌸</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #dff5ff,
+            #eefaff
+        );
+
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.chat-app {
+
+    width: 95%;
+
+    max-width: 900px;
+
+    height: 94vh;
+
+    background: white;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 15px 45px
+        rgba(70,150,190,.18);
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* HEADER */
+
+.header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #bdeeff,
+            #dff8ff
+        );
+
+    padding: 14px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid #d7edf5;
+}
+
+
+.header-avatars {
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.header-avatars img {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border:
+        3px solid white;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,.10);
+}
+
+
+.header-avatars img + img {
+
+    margin-left: -12px;
+}
+
+
+.header-info {
+
+    flex: 1;
+}
+
+
+.header-title {
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #24546a;
+}
+
+
+.header-subtitle {
+
+    font-size: 13px;
+
+    color: #6d8b98;
+}
+
+
+.online-status {
+
+    font-size: 12px;
+
+    color: #42a66a;
+
+    margin-top: 3px;
+}
+
+
+.logout {
+
+    text-decoration: none;
+
+    color: #557582;
+
+    font-size: 13px;
+
+    padding:
+        7px 11px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.7);
+}
+
+
+/* CHAT */
+
+.chat-box {
+
+    flex: 1;
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8fdff,
+            #eefaff
+        );
+}
+
+
+.message-row {
+
+    display: flex;
+
+    margin-bottom: 16px;
+
+    gap: 9px;
+
+    align-items: flex-end;
+}
+
+
+.message-row.user {
+
+    justify-content: flex-end;
+}
+
+
+.message-row.user .avatar {
+
+    display: none;
+}
+
+
+.avatar {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+}
+
+
+.message-content {
+
+    max-width: 72%;
+}
+
+
+.sender-name {
+
+    font-size: 11px;
+
+    color: #78909c;
+
+    margin-left: 5px;
+
+    margin-bottom: 3px;
+}
+
+
+.bubble {
+
+    padding:
+        10px 14px;
+
+    border-radius:
+        17px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    word-wrap: break-word;
+
+    white-space: pre-wrap;
+}
+
+
+.ai-bubble {
+
+    background: white;
+
+    color: #355361;
+
+    border:
+        1px solid #dceff6;
+
+    border-bottom-left-radius: 5px;
+}
+
+
+.user-bubble {
+
+    background: #ccefff;
+
+    color: #285467;
+
+    border-bottom-right-radius: 5px;
+}
+
+
+.time {
+
+    font-size: 9px;
+
+    color: #9aadb5;
+
+    margin-top: 3px;
+
+    margin-left: 5px;
+}
+
+
+/* TYPING */
+
+.typing-row {
+
+    display: none;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 12px;
+}
+
+
+.typing-avatar {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+
+.typing-bubble {
+
+    background: white;
+
+    border:
+        1px solid #dceff6;
+
+    border-radius: 17px;
+
+    padding:
+        9px 13px;
+
+    color: #6d8b98;
+
+    font-size: 12px;
+}
+
+
+.dots {
+
+    display: inline-flex;
+
+    gap: 3px;
+
+    margin-left: 5px;
+}
+
+
+.dots span {
+
+    width: 4px;
+
+    height: 4px;
+
+    background: #7ba8b8;
+
+    border-radius: 50%;
+
+    animation:
+        blink 1.2s infinite;
+}
+
+
+.dots span:nth-child(2) {
+
+    animation-delay: .2s;
+}
+
+
+.dots span:nth-child(3) {
+
+    animation-delay: .4s;
+}
+
+
+@keyframes blink {
+
+    0%,60%,100% {
+        opacity: .3;
+    }
+
+    30% {
+        opacity: 1;
+    }
+}
+
+
+/* INPUT */
+
+.input-area {
+
+    display: flex;
+
+    gap: 8px;
+
+    padding: 13px;
+
+    background: white;
+
+    border-top:
+        1px solid #e1f0f5;
+}
+
+
+.input-area input {
+
+    flex: 1;
+
+    border:
+        1px solid #d6ebf2;
+
+    border-radius: 22px;
+
+    padding:
+        11px 15px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    color: #355361;
+}
+
+
+.input-area input:focus {
+
+    border-color:
+        #9bd7ea;
+}
+
+
+.voice-btn {
+
+    width: 42px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        #e8f8fd;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+
+.send-btn {
+
+    width: 44px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        #aee3f5;
+
+    font-size: 18px;
+
+    color: #285467;
+
+    cursor: pointer;
+}
+
+
+.send-btn:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+}
+
+
+@media(max-width:600px) {
+
+    .chat-app {
+
+        width: 100%;
+
+        height: 100vh;
+
+        border-radius: 0;
+    }
+
+
+    .message-content {
+
+        max-width: 82%;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="chat-app">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+
+    <div class="header-avatars">
+
+        <img
+            src="/static/krishna.jpg"
+            alt="Krishna"
+        >
+
+        <img
+            src="/static/radha.jpg"
+            alt="Radha"
+        >
+
+    </div>
+
+
+    <div class="header-info">
+
+        <div class="header-title">
+            Khush Raho 🌸
+        </div>
+
+        <div class="header-subtitle">
+            Krishna • Radha • You
+        </div>
+
+        <div class="online-status">
+            ● Krishna & Radha online
+        </div>
+
+    </div>
+
+
+    <a
+        href="/accounts/logout/"
+        class="logout"
+    >
+        Logout
+    </a>
+
+</div>
+
+
+<!-- CHAT -->
+
+<div
+    class="chat-box"
+    id="chatBox"
+>
+
+
+    <div class="message-row">
+
+        <img
+            class="avatar"
+            src="/static/krishna.jpg"
+            alt="Krishna"
+        >
+
+        <div class="message-content">
+
+            <div class="sender-name">
+                Krishna
+            </div>
+
+            <div class="bubble ai-bubble">
+                Bolo Sakhi, kaise ho? 🌸
+            </div>
+
+            <div class="time">
+                Just now
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="message-row">
+
+        <img
+            class="avatar"
+            src="/static/radha.jpg"
+            alt="Radha"
+        >
+
+        <div class="message-content">
+
+            <div class="sender-name">
+                Radha
+            </div>
+
+            <div class="bubble ai-bubble">
+                Haan Sakhi, bolo... aaj moner ki khobor? 💗
+            </div>
+
+            <div class="time">
+                Just now
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TYPING -->
+
+    <div
+        class="typing-row"
+        id="typingRow"
+    >
+
+        <img
+            class="typing-avatar"
+            id="typingAvatar"
+            src="/static/krishna.jpg"
+            alt=""
+        >
+
+        <div class="typing-bubble">
+
+            <span id="typingName">
+                Krishna
+            </span>
+
+            <span>
+                is typing
+            </span>
+
+            <span class="dots">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- INPUT -->
+
+<div class="input-area">
+
+    <input
+        id="messageInput"
+        type="text"
+        placeholder="Bolo Sakhi..."
+        autocomplete="off"
+    >
+
+
+    <button
+        class="voice-btn"
+        onclick="startVoice()"
+    >
+        🎤
+    </button>
+
+
+    <button
+        class="send-btn"
+        id="sendButton"
+        onclick="sendMessage()"
+    >
+        ➤
+    </button>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+const input =
+    document.getElementById(
+        "messageInput"
+    );
+
+
+const chatBox =
+    document.getElementById(
+        "chatBox"
+    );
+
+
+const typingRow =
+    document.getElementById(
+        "typingRow"
+    );
+
+
+const typingName =
+    document.getElementById(
+        "typingName"
+    );
+
+
+const typingAvatar =
+    document.getElementById(
+        "typingAvatar"
+    );
+
+
+const sendButton =
+    document.getElementById(
+        "sendButton"
+    );
+
+
+/* =========================
+   TIME
+========================= */
+
+function getCurrentTime() {
+
+    return new Date()
+        .toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+}
+
+
+/* =========================
+   SCROLL
+========================= */
+
+function scrollBottom() {
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+}
+
+
+/* =========================
+   SPEAKER
+========================= */
+
+function getExplicitSpeaker(
+    message
+) {
+
+    const text =
+        message.toLowerCase();
+
+
+    if (
+        text.includes("krishna") ||
+        text.includes("কৃষ্ণ")
+    ) {
+
+        return "krishna";
+    }
+
+
+    if (
+        text.includes("radha") ||
+        text.includes("রাধা")
+    ) {
+
+        return "radha";
+    }
+
+
+    return null;
+}
+
+
+/* =========================
+   TYPING
+========================= */
+
+function showTyping(
+    speaker
+) {
+
+    typingRow.style.display =
+        "flex";
+
+
+    if (
+        speaker === "radha"
+    ) {
+
+        typingName.textContent =
+            "Radha";
+
+        typingAvatar.src =
+            "/static/radha.jpg";
+
+    }
+
+    else if (
+        speaker === "both"
+    ) {
+
+        typingName.textContent =
+            "Krishna & Radha";
+
+        typingAvatar.src =
+            "/static/krishna.jpg";
+
+    }
+
+    else {
+
+        typingName.textContent =
+            "Krishna";
+
+        typingAvatar.src =
+            "/static/krishna.jpg";
+    }
+
+
+    scrollBottom();
+}
+
+
+function hideTyping() {
+
+    typingRow.style.display =
+        "none";
+}
+
+
+/* =========================
+   USER MESSAGE
+========================= */
+
+function addUserMessage(
+    message
+) {
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "message-row user";
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "message-content";
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+    bubble.className =
+        "bubble user-bubble";
+
+    bubble.textContent =
+        message;
+
+
+    const time =
+        document.createElement(
+            "div"
+        );
+
+    time.className =
+        "time";
+
+    time.textContent =
+        getCurrentTime();
+
+
+    content.appendChild(
+        bubble
+    );
+
+    content.appendChild(
+        time
+    );
+
+
+    row.appendChild(
+        content
+    );
+
+
+    chatBox.appendChild(
+        row
+    );
+
+
+    scrollBottom();
+}
+
+
+/* =========================
+   CREATE STREAMING BUBBLE
+========================= */
+
+function createStreamingBubble(
+    speaker
+) {
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "message-row";
+
+
+    const avatar =
+        document.createElement(
+            "img"
+        );
+
+    avatar.className =
+        "avatar";
+
+
+    if (
+        speaker === "Radha"
+    ) {
+
+        avatar.src =
+            "/static/radha.jpg";
+
+        avatar.alt =
+            "Radha";
+
+    }
+
+    else {
+
+        avatar.src =
+            "/static/krishna.jpg";
+
+        avatar.alt =
+            "Krishna";
+    }
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "message-content";
+
+
+    const sender =
+        document.createElement(
+            "div"
+        );
+
+    sender.className =
+        "sender-name";
+
+    sender.textContent =
+        speaker;
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+    bubble.className =
+        "bubble ai-bubble";
+
+    bubble.textContent =
+        "";
+
+
+    const time =
+        document.createElement(
+            "div"
+        );
+
+    time.className =
+        "time";
+
+
+    content.appendChild(
+        sender
+    );
+
+    content.appendChild(
+        bubble
+    );
+
+    content.appendChild(
+        time
+    );
+
+
+    row.appendChild(
+        avatar
+    );
+
+    row.appendChild(
+        content
+    );
+
+
+    chatBox.appendChild(
+        row
+    );
+
+
+    scrollBottom();
+
+
+    return {
+        bubble,
+        time
+    };
+}
+
+
+/* =========================
+   PARSE STREAMED TEXT
+========================= */
+
+function cleanStreamText(
+    text
+) {
+
+    return text
+        .replace(
+            /^Krishna:\s*/i,
+            ""
+        )
+        .replace(
+            /^Radha:\s*/i,
+            ""
+        );
+}
+
+
+/* =========================
+   SEND MESSAGE
+========================= */
+
+async function sendMessage() {
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) {
+        return;
+    }
+
+
+    addUserMessage(
+        message
+    );
+
+
+    input.value = "";
+
+
+    sendButton.disabled =
+        true;
+
+
+    const explicitSpeaker =
+        getExplicitSpeaker(
+            message
+        );
+
+
+    /*
+       If Sakhi explicitly names
+       someone, we can show that
+       speaker immediately.
+    */
+
+    if (explicitSpeaker) {
+
+        showTyping(
+            explicitSpeaker
+        );
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chat/",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+                            message:
+                                message
+                        })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const errorData =
+                await response.json();
+
+            throw new Error(
+                errorData.error ||
+                "Server error."
+            );
+        }
+
+
+        /*
+           Streaming response
+        */
+
+        const reader =
+            response.body.getReader();
+
+
+        const decoder =
+            new TextDecoder(
+                "utf-8"
+            );
+
+
+        let buffer = "";
+
+        let fullReply = "";
+
+        let bubbleObject = null;
+
+        let currentSpeaker =
+            explicitSpeaker === "radha"
+                ? "Radha"
+                : "Krishna";
+
+
+        let actualSpeakerKnown =
+            !!explicitSpeaker;
+
+
+        hideTyping();
+
+
+        while (true) {
+
+            const {
+                value,
+                done
+            } =
+                await reader.read();
+
+
+            if (done) {
+                break;
+            }
+
+
+            buffer +=
+                decoder.decode(
+                    value,
+                    {
+                        stream: true
+                    }
+                );
+
+
+            const lines =
+                buffer.split("\n");
+
+
+            buffer =
+                lines.pop();
+
+
+            for (
+                const line of lines
+            ) {
+
+                if (!line.trim()) {
+                    continue;
+                }
+
+
+                let event;
+
+                try {
+
+                    event =
+                        JSON.parse(
+                            line
+                        );
+
+                }
+
+                catch {
+
+                    continue;
+                }
+
+
+                /* -----------------
+                   TEXT CHUNK
+                ----------------- */
+
+                if (
+                    event.type ===
+                    "chunk"
+                ) {
+
+                    const chunk =
+                        event.text ||
+                        "";
+
+
+                    fullReply +=
+                        chunk;
+
+
+                    /*
+                       Detect speaker
+                       as soon as Gemini
+                       sends the prefix.
+                    */
+
+                    if (
+                        !actualSpeakerKnown
+                    ) {
+
+                        const lower =
+                            fullReply
+                            .toLowerCase();
+
+
+                        if (
+                            lower.startsWith(
+                                "radha:"
+                            )
+                        ) {
+
+                            currentSpeaker =
+                                "Radha";
+
+                            actualSpeakerKnown =
+                                true;
+
+                        }
+
+                        else if (
+                            lower.startsWith(
+                                "krishna:"
+                            )
+                        ) {
+
+                            currentSpeaker =
+                                "Krishna";
+
+                            actualSpeakerKnown =
+                                true;
+                        }
+                    }
+
+
+                    /*
+                       Create bubble
+                    */
+
+                    if (
+                        !bubbleObject &&
+                        (
+                            actualSpeakerKnown
+                            ||
+                            fullReply.length > 8
+                        )
+                    ) {
+
+                        bubbleObject =
+                            createStreamingBubble(
+                                currentSpeaker
+                            );
+                    }
+
+
+                    if (
+                        bubbleObject
+                    ) {
+
+                        bubbleObject
+                            .bubble
+                            .textContent =
+                            cleanStreamText(
+                                fullReply
+                            );
+
+
+                        bubbleObject
+                            .time
+                            .textContent =
+                            getCurrentTime();
+
+
+                        scrollBottom();
+                    }
+
+                }
+
+
+                /* -----------------
+                   DONE
+                ----------------- */
+
+                if (
+                    event.type ===
+                    "done"
+                ) {
+
+                    const speaker =
+                        event.speaker;
+
+
+                    if (
+                        speaker ===
+                        "both"
+                    ) {
+
+                        /*
+                           Both-speaker
+                           replies are rare.
+                           For now the streamed
+                           first response remains
+                           together.
+                        */
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        /*
+           If somehow no bubble
+           appeared, show fallback.
+        */
+
+        if (
+            !bubbleObject &&
+            fullReply
+        ) {
+
+            bubbleObject =
+                createStreamingBubble(
+                    currentSpeaker
+                );
+
+
+            bubbleObject
+                .bubble
+                .textContent =
+                cleanStreamText(
+                    fullReply
+                );
+
+
+            bubbleObject
+                .time
+                .textContent =
+                getCurrentTime();
+        }
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        hideTyping();
+
+
+        createStreamingBubble(
+            "Krishna"
+        )
+        .bubble
+        .textContent =
+            "Sakhi, ekhon ektu technical problem hocche. Abar ekbar try koro.";
+
+
+    }
+
+    finally {
+
+        hideTyping();
+
+        sendButton.disabled =
+            false;
+
+        input.focus();
+
+    }
+
+}
+
+
+/* =========================
+   ENTER
+========================= */
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   VOICE
+========================= */
+
+function startVoice() {
+
+    if (
+        !(
+            "webkitSpeechRecognition"
+            in window
+        )
+    ) {
+
+        alert(
+            "Voice input ei browser-e available nei."
+        );
+
+        return;
+    }
+
+
+    const recognition =
+        new webkitSpeechRecognition();
+
+
+    recognition.lang =
+        "en-IN";
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.onresult =
+        function(event) {
+
+            input.value =
+                event
+                .results[0][0]
+                .transcript;
+
+        };
+
+
+    recognition.start();
+
+}
+
+
+scrollBottom();
+
+</script>
+
+
+</body>
+
+</html>

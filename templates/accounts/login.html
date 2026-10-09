@@ -1,0 +1,260 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login to Sakhi 🌸</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dff6ff,
+                    #c7edf9,
+                    #eefbff
+                );
+        }
+
+        .card {
+
+            width: 90%;
+            max-width: 360px;
+
+            background: rgba(255, 255, 255, 0.95);
+
+            padding: 28px 30px;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 12px 35px rgba(60, 130, 160, 0.18);
+
+            text-align: center;
+        }
+
+        .avatar {
+
+            width: 82px;
+            height: 82px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            display: block;
+
+            margin: 0 auto 14px;
+
+            border: 4px solid #b7e5f5;
+
+            box-shadow:
+                0 5px 15px rgba(70, 150, 180, 0.20);
+        }
+
+        h1 {
+
+            margin: 4px 0 6px;
+
+            color: #17465a;
+
+            font-size: 24px;
+        }
+
+        .subtitle {
+
+            margin: 0 0 22px;
+
+            color: #668995;
+
+            font-size: 14px;
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 12px 14px;
+
+            margin-bottom: 12px;
+
+            border: 1px solid #c9e5ee;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: #fbfeff;
+        }
+
+        input:focus {
+
+            border-color: #70bfdc;
+
+            box-shadow:
+                0 0 0 3px rgba(112, 191, 220, 0.12);
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-top: 2px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background: #55b7d8;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+
+            background: #3da5c8;
+
+            transform: translateY(-1px);
+        }
+
+        .error {
+
+            color: #d9534f;
+
+            background: #fff1f0;
+
+            border-radius: 9px;
+
+            padding: 8px;
+
+            margin-bottom: 14px;
+
+            font-size: 13px;
+        }
+
+        .register-link {
+
+            margin-top: 18px;
+
+            font-size: 13px;
+
+            color: #668995;
+        }
+
+        .register-link a {
+
+            color: #258db0;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="card">
+
+        <img
+            src="{% static 'krishna.jpg' %}"
+            alt="Krishna"
+            class="avatar"
+        >
+
+        <h1>Welcome back 🌸</h1>
+
+        <p class="subtitle">
+            Bolo Sakhi, kaise ho?
+        </p>
+
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+
+            <button type="submit">
+                Enter Sakhi 🌷
+            </button>
+
+        </form>
+
+
+        <div class="register-link">
+
+            New to Sakhi?
+
+            <a href="/accounts/register/">
+                Create an account
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

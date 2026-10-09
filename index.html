@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sakhi — Krishna & Radha</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ==============================
+         CHAT APP
+    =============================== -->
+
+    <div class="chat-app">
+
+
+        <!-- ==============================
+             HEADER
+        =============================== -->
+
+        <header class="chat-header">
+
+            <div class="profile-section">
+
+                <div class="profile-avatar">
+
+                    <img
+                        src="assets/krishna-radha.jpg"
+                        alt="Krishna and Radha"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+
+                    <div class="avatar-fallback">
+                        🦚
+                    </div>
+
+                </div>
+
+                <div class="profile-details">
+
+                    <div class="profile-name">
+                        Krishna & Radha
+                        <span class="edit-icon">🖊️</span>
+                    </div>
+
+                    <div class="online-status">
+                        online
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HEADER ACTIONS -->
+
+            <div class="header-actions">
+
+                <button
+                    class="header-button"
+                    id="themeBtn"
+                    title="Change theme"
+                >
+                    🌞
+                </button>
+
+                <button
+                    class="header-button"
+                    id="muteBtn"
+                    title="Mute"
+                >
+                    🔇
+                </button>
+
+                <button
+                    class="header-button"
+                    id="notesBtn"
+                    title="Notes"
+                >
+                    📜
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ==============================
+             CHAT AREA
+        =============================== -->
+
+        <main
+            id="chatMessages"
+            class="chat-messages"
+        >
+
+            <!-- Welcome message -->
+
+            <div class="message-row received">
+
+                <div
+    class="small-avatar"
+    style="
+        background-image: url('assets/krishna.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        font-size: 0;
+    "
+></div>
+
+                <div class="message-wrapper">
+
+                    <div class="sender-name">
+                        Krishna
+                    </div>
+
+                    <div class="message-bubble">
+
+                        Bolo Sakhi... 🌸
+                        <br>
+                        Aaj dil mein kya hai?
+
+                        <span class="message-time">
+                            now
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+
+
+        <!-- ==============================
+             INPUT AREA
+        =============================== -->
+
+        <footer class="input-area">
+
+            <div class="input-toolbar">
+
+                <!-- CAMERA -->
+
+                <button
+                    class="tool-button"
+                    id="cameraBtn"
+                    title="Camera"
+                >
+                    📷
+                </button>
+
+
+                <!-- LANGUAGE -->
+
+                <button
+                    class="language-button"
+                    id="languageBtn"
+                >
+                    <span>বাংলা</span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+
+                <!-- MIC -->
+
+                <button
+                    class="tool-button mic-button"
+                    id="micBtn"
+                    title="Voice"
+                >
+                    🎤
+                </button>
+
+
+                <!-- MESSAGE INPUT -->
+
+                <div class="message-input-container">
+
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Mon-er kotha bolo..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- SEND -->
+
+                <button
+                    class="send-button"
+                    id="sendBtn"
+                    title="Send"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- CAMERA INPUT -->
+
+    <input
+        type="file"
+        id="cameraInput"
+        accept="image/*"
+        capture="environment"
+        hidden
+    >
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
